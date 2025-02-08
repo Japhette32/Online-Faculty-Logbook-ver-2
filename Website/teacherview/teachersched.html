@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Teacher Schedule</title>
+    <link rel="stylesheet" href="teachersched.css">
+</head>
+<body>
+    <div class="nav">
+        <img src="Logo.png" alt="Umak Logo">
+        <img src="OSHO-LOGO.webp" alt="OSHO logo">
+        <h2>Online Faculty Logbook</h2>
+        <div class="line"></div>
+        <ul>
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="teacher.html" class="active">Your Schedule</a></li>
+            <li><a href="facultymap.html">Faculty Map</a></li>
+        </ul>
+        <a href="../index.php" class="logout-btn">Log Out</a>
+    </div>
+    <div class="container">
+        <h2>Set Your Available Time</h2>
+        <form id="setScheduleForm">
+            <div class="day-schedule">
+                <label>Monday:</label>
+                <div class="time-inputs" id="mondayInputs">
+                    <div class="time-input">
+                        <input type="time" name="mondayStart[]">
+                        <span>-</span>
+                        <input type="time" name="mondayEnd[]">
+                        <button type="button" class="remove-time-btn" onclick="removeTimeInput(this)">-</button>
+                    </div>
+                </div>
+                <button type="button" class="add-time-btn" onclick="addTimeInput('mondayInputs')">+</button>
+            </div>
+            <div class="day-schedule">
+                <label>Tuesday:</label>
+                <div class="time-inputs" id="tuesdayInputs">
+                    <div class="time-input">
+                        <input type="time" name="tuesdayStart[]">
+                        <span>-</span>
+                        <input type="time" name="tuesdayEnd[]">
+                        <button type="button" class="remove-time-btn" onclick="removeTimeInput(this)">-</button>
+                    </div>
+                </div>
+                <button type="button" class="add-time-btn" onclick="addTimeInput('tuesdayInputs')">+</button>
+            </div>
+            <div class="day-schedule">
+                <label>Wednesday:</label>
+                <div class="time-inputs" id="wednesdayInputs">
+                    <div class="time-input">
+                        <input type="time" name="wednesdayStart[]">
+                        <span>-</span>
+                        <input type="time" name="wednesdayEnd[]">
+                        <button type="button" class="remove-time-btn" onclick="removeTimeInput(this)">-</button>
+                    </div>
+                </div>
+                <button type="button" class="add-time-btn" onclick="addTimeInput('wednesdayInputs')">+</button>
+            </div>
+            <div class="day-schedule">
+                <label>Thursday:</label>
+                <div class="time-inputs" id="thursdayInputs">
+                    <div class="time-input">
+                        <input type="time" name="thursdayStart[]">
+                        <span>-</span>
+                        <input type="time" name="thursdayEnd[]">
+                        <button type="button" class="remove-time-btn" onclick="removeTimeInput(this)">-</button>
+                    </div>
+                </div>
+                <button type="button" class="add-time-btn" onclick="addTimeInput('thursdayInputs')">+</button>
+            </div>
+            <div class="day-schedule">
+                <label>Friday:</label>
+                <div class="time-inputs" id="fridayInputs">
+                    <div class="time-input">
+                        <input type="time" name="fridayStart[]">
+                        <span>-</span>
+                        <input type="time" name="fridayEnd[]">
+                        <button type="button" class="remove-time-btn" onclick="removeTimeInput(this)">-</button>
+                    </div>
+                </div>
+                <button type="button" class="add-time-btn" onclick="addTimeInput('fridayInputs')">+</button>
+            </div>
+            <button type="submit">Save Schedule</button>
+        </form>
+    </div>
+    <footer class="footer">
+        <div class="info">
+            <h2>Contact OHSO</h2>
+            <span class="ohsologo"><img src="OSHO-LOGO.webp"></span>
+            <br>
+            <ul>
+                <li>
+                    <div class="footer-item">
+                        <img src="gmail.png">
+                        <span>ohso@umak.edu.ph</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="footer-item">
+                        <img src="map.png">
+                        <span>J.P. Rizal Extn. West Rembo, Makati, Philippines, 1215</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="footer-item">
+                        <img src="phone-call.png">
+                        <span>288820535</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="footer-item">
+                        <img src="facebook.png">
+                        <span>UMak Occupational Health and Safety Office</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </footer>
+    <script>
+        function addTimeInput(dayId) {
+            var container = document.getElementById(dayId);
+            var div = document.createElement('div');
+            div.className = 'time-input';
+            var startInput = document.createElement('input');
+            startInput.type = 'time';
+            startInput.name = dayId.replace('Inputs', 'Start[]');
+            var dash = document.createElement('span');
+            dash.textContent = '-';
+            var endInput = document.createElement('input');
+            endInput.type = 'time';
+            endInput.name = dayId.replace('Inputs', 'End[]');
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'remove-time-btn';
+            button.textContent = '-';
+            button.onclick = function() { removeTimeInput(button); };
+            div.appendChild(startInput);
+            div.appendChild(dash);
+            div.appendChild(endInput);
+            div.appendChild(button);
+            container.appendChild(div);
+        }
+
+        function removeTimeInput(button) {
+            var div = button.parentElement;
+            div.remove();
+        }
+
+        document.getElementById('setScheduleForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var schedule = {};
+            ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].forEach(function(day) {
+                var startTimes = Array.from(document.getElementsByName(day + 'Start[]')).map(input => input.value);
+                var endTimes = Array.from(document.getElementsByName(day + 'End[]')).map(input => input.value);
+                schedule[day] = startTimes.map((start, index) => ({ start, end: endTimes[index] }));
+            });
+            localStorage.setItem('schedule', JSON.stringify(schedule));
+            alert('Schedule saved successfully!');
+            window.location.href = 'teacher.html'; // Redirect to teacher.html
+        });
+    </script>
+</body>
+</html>
